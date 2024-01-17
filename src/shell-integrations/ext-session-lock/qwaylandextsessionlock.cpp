@@ -26,6 +26,10 @@ QWaylandExtSessionLockSurface::QWaylandExtSessionLockSurface(QWaylandExtSessionL
         qCWarning(lcQpaWayland) << "Cannot find LockSurface interface on window" << window->window();
         return;
     }
+    if (!interface->isEnabled()) {
+        qCWarning(lcQpaWayland) << "LockSurface is disabled on window" << window->window();
+        return;
+    }
 
     init(lock->get_lock_surface(window->wlSurface(), window->waylandScreen()->output()));
 

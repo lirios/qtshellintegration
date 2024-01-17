@@ -27,6 +27,7 @@ public:
 
     bool initialized = false;
     QWindow *window = nullptr;
+    bool enabled = false;
 };
 
 } // namespace QtShellIntegration

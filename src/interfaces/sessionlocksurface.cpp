@@ -14,10 +14,13 @@ namespace QtShellIntegration {
 typedef QHash<QWindow *, SessionLockSurface *> SessionLockSurfaceMap;
 Q_GLOBAL_STATIC(SessionLockSurfaceMap, globalLockSurfaces)
 
-SessionLockSurface::SessionLockSurface(QObject *parent)
+SessionLockSurface::SessionLockSurface(QWindow *window, QObject *parent)
     : QObject(parent)
     , d_ptr(new SessionLockSurfacePrivate())
 {
+    Q_D(SessionLockSurface);
+    d->window = window;
+    globalLockSurfaces->insert(window, this);
 }
 
 SessionLockSurface::~SessionLockSurface()
@@ -26,55 +29,43 @@ SessionLockSurface::~SessionLockSurface()
     globalLockSurfaces->remove(d->window);
 }
 
-bool SessionLockSurface::isInitialized() const
-{
-    Q_D(const SessionLockSurface);
-    return d->initialized;
-}
-
-void SessionLockSurface::initialize()
-{
-    Q_D(SessionLockSurface);
-
-    if (d->initialized)
-        return;
-
-    if (!d->window) {
-        qCWarning(lcQtShellIntegration, "Window not assigned to SessionLockSurface, failed to initialize");
-        return;
-    }
-
-    d->initialized = true;
-}
-
 QWindow *SessionLockSurface::window() const
 {
     Q_D(const SessionLockSurface);
     return d->window;
 }
 
-void SessionLockSurface::setWindow(QWindow *window)
+bool SessionLockSurface::isEnabled() const
+{
+    Q_D(const SessionLockSurface);
+    return d->enabled;
+}
+
+void SessionLockSurface::setEnabled(bool enabled)
 {
     Q_D(SessionLockSurface);
+    
+    if (!d->initialized) {
+        if (d->enabled == enabled)
+            return;
 
-    if (d->window == window)
-        return;
-
-    if (d->initialized) {
-        qCWarning(lcQtShellIntegration, "Unable to change SessionLockSurface::window after initialization");
-        return;
+        d->initialized = true;
+        d->enabled = enabled;
+        Q_EMIT enabledChanged(enabled);
     }
-
-    d->window = window;
-    Q_EMIT windowChanged(d->window);
-
-    if (!globalLockSurfaces->contains(d->window))
-        globalLockSurfaces->insert(d->window, this);
 }
 
 SessionLockSurface *SessionLockSurface::get(QWindow *window)
 {
-    return globalLockSurfaces->value(window, nullptr);
+    if (globalLockSurfaces->contains(window))
+        return globalLockSurfaces->value(window);
+    else
+        return new SessionLockSurface(window);
+}
+
+SessionLockSurface *SessionLockSurface::qmlAttachedProperties(QObject *object)
+{
+    return get(qobject_cast<QWindow *>(object));
 }
 
 } // QtShellIntegration

@@ -19,24 +19,29 @@ class LIRIQTSHELLINTEGRATION_EXPORT SessionLockSurface : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
+    QML_UNCREATABLE("Cannot instantiate SessionLockSurface")
+    QML_ATTACHED(SessionLockSurface)
     Q_DECLARE_PRIVATE(SessionLockSurface)
-    Q_PROPERTY(QWindow *window READ window WRITE setWindow NOTIFY windowChanged)
+    Q_PROPERTY(QWindow *window READ window CONSTANT)
+    Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
 public:
-    SessionLockSurface(QObject *parent = nullptr);
     ~SessionLockSurface();
 
-    bool isInitialized() const;
-
-    void initialize();
-
     QWindow *window() const;
-    void setWindow(QWindow *window);
+
+    bool isEnabled() const;
+    void setEnabled(bool enabled);
 
     static SessionLockSurface *get(QWindow *window);
 
+    static SessionLockSurface *qmlAttachedProperties(QObject *object);
+
 Q_SIGNALS:
-    void windowChanged(QWindow *window);
+    void enabledChanged(bool enabled);
     void unlockRequested();
+
+protected:
+    SessionLockSurface(QWindow *window, QObject *parent = nullptr);
 
 private:
     QScopedPointer<SessionLockSurfacePrivate> const d_ptr;
