@@ -24,6 +24,7 @@ And the following modules:
 
  * [cmake](https://gitlab.kitware.com/cmake/cmake) >= 3.19.0
  * [extra-cmake-modules](https://invent.kde.org/frameworks/extra-cmake-modules) >= 5.245.0
+ * [cmake-shared](https://github.com/lirios/cmake-shared.git) >= 2.0.99
  * [wayland-protocols](https://gitlab.freedesktop.org/wayland/wayland-protocols) >= 1.25
  * [xkbcommon](https://github.com/xkbcommon/libxkbcommon)
 
