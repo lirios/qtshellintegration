@@ -6,7 +6,7 @@
 #include <QtWaylandClient/private/qwaylandwindow_p.h>
 #include <qpa/qplatformwindow.h>
 
-#include <LiriQtShellIntegration/ExtSessionLockSurface>
+#include <LiriQtShellIntegration/SessionLockSurface>
 
 #include "qwaylandextsessionlock_p.h"
 

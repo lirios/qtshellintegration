@@ -8,7 +8,7 @@
 #include <QtWaylandClient/private/qwaylandshellsurface_p.h>
 #include <QtWaylandClient/private/qwaylandwindow_p.h>
 
-#include <LiriQtShellIntegration/WlrLayerSurface>
+#include <LiriQtShellIntegration/LayerSurface>
 
 #include "qwaylandlayershellintegration_p.h"
 #include "qwayland-wlr-layer-shell-unstable-v1.h"
