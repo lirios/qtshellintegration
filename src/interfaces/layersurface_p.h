@@ -29,7 +29,7 @@ public:
     bool setLayerEnabled = false;
     QWindow *window = nullptr;
     LayerSurface::Layer layer = LayerSurface::TopLayer;
-    QString role = QStringLiteral("unknown");
+    QString scope = QStringLiteral("unknown");
     LayerSurface::Anchors anchors;
     qint32 exclusiveZone = 0;
     QMargins margins;

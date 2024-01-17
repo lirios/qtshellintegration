@@ -21,14 +21,14 @@ QWaylandLayerSurface::QWaylandLayerSurface(QWaylandLayerShellIntegration *shell,
         qCWarning(lcQpaWayland) << "Cannot find LayerSurface interface on window" << window->window();
         return;
     }
-    qCDebug(lcQpaWayland) << "Creating layer surface with namespace" << interface->role();
+    qCDebug(lcQpaWayland) << "Creating layer surface with scope" << interface->scope();
 
     // Initialize layer surface
     auto *wlSurface = window->waylandSurface()->object();
     auto *wlOutput = !window->waylandScreen() || window->waylandScreen()->isPlaceholder()
             ? nullptr : window->waylandScreen()->output();
     auto layer = static_cast<uint32_t>(interface->layer());
-    init(shell->get_layer_surface(wlSurface, wlOutput, layer, interface->role()));
+    init(shell->get_layer_surface(wlSurface, wlOutput, layer, interface->scope()));
 
     // Enable changing the layer after initialization
     interface->setLayerEnabled(zwlr_layer_surface_v1_get_version(object()) >= ZWLR_LAYER_SURFACE_V1_SET_LAYER_SINCE_VERSION);

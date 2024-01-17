@@ -81,26 +81,26 @@ void LayerSurface::setLayer(LayerSurface::Layer layer)
     Q_EMIT layerChanged(d->layer);
 }
 
-QString LayerSurface::role() const
+QString LayerSurface::scope() const
 {
     Q_D(const LayerSurface);
-    return d->role;
+    return d->scope;
 }
 
-void LayerSurface::setRole(const QString &role)
+void LayerSurface::setScope(const QString &scope)
 {
     Q_D(LayerSurface);
 
-    if (d->role == role)
+    if (d->scope == scope)
         return;
 
     if (d->initialized) {
-        qCWarning(lcQtShellIntegration, "Unable to change LayerSurface::role after initialization");
+        qCWarning(lcQtShellIntegration, "Unable to change LayerSurface::scope after initialization");
         return;
     }
 
-    d->role = role;
-    Q_EMIT roleChanged(d->role);
+    d->scope = scope;
+    Q_EMIT scopeChanged(d->scope);
 }
 
 LayerSurface::Anchors LayerSurface::anchors() const

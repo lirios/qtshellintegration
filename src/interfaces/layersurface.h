@@ -21,7 +21,7 @@ class LIRIQTSHELLINTEGRATION_EXPORT LayerSurface : public QObject
     Q_DECLARE_PRIVATE(LayerSurface)
     Q_PROPERTY(QWindow *window READ window WRITE setWindow NOTIFY windowChanged)
     Q_PROPERTY(Liri::QtShellIntegration::LayerSurface::Layer layer READ layer WRITE setLayer NOTIFY layerChanged)
-    Q_PROPERTY(QString role READ role WRITE setRole NOTIFY roleChanged)
+    Q_PROPERTY(QString scope READ scope WRITE setScope NOTIFY scopeChanged)
     Q_PROPERTY(Liri::QtShellIntegration::LayerSurface::Anchors anchors READ anchors WRITE setAnchors NOTIFY anchorsChanged)
     Q_PROPERTY(qint32 exclusiveZone READ exclusiveZone WRITE setExclusiveZone NOTIFY exclusiveZoneChanged)
     Q_PROPERTY(QMargins margins READ margins NOTIFY marginsChanged)
@@ -66,8 +66,8 @@ public:
     LayerSurface::Layer layer() const;
     void setLayer(LayerSurface::Layer layer);
 
-    QString role() const;
-    void setRole(const QString &role);
+    QString scope() const;
+    void setScope(const QString &scope);
 
     LayerSurface::Anchors anchors() const;
     void setAnchors(LayerSurface::Anchors anchors);
@@ -103,7 +103,7 @@ public:
 Q_SIGNALS:
     void windowChanged(QWindow *window);
     void layerChanged(LayerSurface::Layer layer);
-    void roleChanged(const QString &role);
+    void scopeChanged(const QString &scope);
     void anchorsChanged(LayerSurface::Anchors anchors);
     void exclusiveZoneChanged(qint32 exclusiveZone);
     void marginsChanged(const QMargins &margins);
