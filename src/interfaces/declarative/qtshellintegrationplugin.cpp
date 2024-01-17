@@ -11,8 +11,8 @@ QML_DECLARE_TYPEINFO(Liri::QtShellIntegration::LayerSurface, QML_HAS_ATTACHED_PR
 
 class Plugin : public QQmlExtensionPlugin
 {
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
 public:
     void registerTypes(const char *uri) override {
         Q_ASSERT(QLatin1String(uri) == QLatin1String("Liri.QtShellIntegration"));
