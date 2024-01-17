@@ -31,12 +31,12 @@ public:
     void attachPopup(QWaylandShellSurface *popup) override;
 
 public Q_SLOTS:
-    void setLayer(Liri::QtShellIntegration::WlrLayerSurface::Layer layer);
-    void setAnchors(Liri::QtShellIntegration::WlrLayerSurface::Anchors anchors);
+    void setLayer(Liri::QtShellIntegration::LayerSurface::Layer layer);
+    void setAnchors(Liri::QtShellIntegration::LayerSurface::Anchors anchors);
     void setSize(const QSize &surfaceSize);
     void setExclusiveZone(qint32 exclusiveZone);
     void setMargins(const QMargins &margins);
-    void setKeyboardInteractivity(Liri::QtShellIntegration::WlrLayerSurface::KeyboardInteractivity keyboardInteractivity);
+    void setKeyboardInteractivity(Liri::QtShellIntegration::LayerSurface::KeyboardInteractivity keyboardInteractivity);
 
 protected:
     void zwlr_layer_surface_v1_configure(uint32_t serial, uint32_t width, uint32_t height) override;
@@ -44,7 +44,7 @@ protected:
 
 private:
     QWaylandLayerShellIntegration *m_shell = nullptr;
-    Liri::QtShellIntegration::WlrLayerSurface::Anchors m_anchors;
+    Liri::QtShellIntegration::LayerSurface::Anchors m_anchors;
     bool m_configured = false;
     QSize m_pendingSize;
 };

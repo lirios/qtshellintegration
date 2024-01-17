@@ -12,24 +12,24 @@ namespace Liri {
 
 namespace QtShellIntegration {
 
-class WlrLayerSurfacePrivate;
+class LayerSurfacePrivate;
 
-class LIRIQTSHELLINTEGRATION_EXPORT WlrLayerSurface : public QObject
+class LIRIQTSHELLINTEGRATION_EXPORT LayerSurface : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
-    Q_DECLARE_PRIVATE(WlrLayerSurface)
+    Q_DECLARE_PRIVATE(LayerSurface)
     Q_PROPERTY(QWindow *window READ window WRITE setWindow NOTIFY windowChanged)
-    Q_PROPERTY(Liri::QtShellIntegration::WlrLayerSurface::Layer layer READ layer WRITE setLayer NOTIFY layerChanged)
+    Q_PROPERTY(Liri::QtShellIntegration::LayerSurface::Layer layer READ layer WRITE setLayer NOTIFY layerChanged)
     Q_PROPERTY(QString role READ role WRITE setRole NOTIFY roleChanged)
-    Q_PROPERTY(Liri::QtShellIntegration::WlrLayerSurface::Anchors anchors READ anchors WRITE setAnchors NOTIFY anchorsChanged)
+    Q_PROPERTY(Liri::QtShellIntegration::LayerSurface::Anchors anchors READ anchors WRITE setAnchors NOTIFY anchorsChanged)
     Q_PROPERTY(qint32 exclusiveZone READ exclusiveZone WRITE setExclusiveZone NOTIFY exclusiveZoneChanged)
     Q_PROPERTY(QMargins margins READ margins NOTIFY marginsChanged)
     Q_PROPERTY(qint32 leftMargin READ leftMargin WRITE setLeftMargin NOTIFY leftMarginChanged)
     Q_PROPERTY(qint32 rightMargin READ rightMargin WRITE setRightMargin NOTIFY rightMarginChanged)
     Q_PROPERTY(qint32 topMargin READ topMargin WRITE setTopMargin NOTIFY topMarginChanged)
     Q_PROPERTY(qint32 bottomMargin READ bottomMargin WRITE setBottomMargin NOTIFY bottomMarginChanged)
-    Q_PROPERTY(Liri::QtShellIntegration::WlrLayerSurface::KeyboardInteractivity keyboardInteractivity READ keyboardInteractivity WRITE setKeyboardInteractivity NOTIFY keyboardInteractivityChanged)
+    Q_PROPERTY(Liri::QtShellIntegration::LayerSurface::KeyboardInteractivity keyboardInteractivity READ keyboardInteractivity WRITE setKeyboardInteractivity NOTIFY keyboardInteractivityChanged)
 public:
     enum Layer {
         BackgroundLayer = 0,
@@ -56,21 +56,21 @@ public:
     };
     Q_ENUM(KeyboardInteractivity)
 
-    ~WlrLayerSurface();
+    ~LayerSurface();
 
     bool isInitialized() const;
 
     QWindow *window() const;
     void setWindow(QWindow *window);
 
-    WlrLayerSurface::Layer layer() const;
-    void setLayer(WlrLayerSurface::Layer layer);
+    LayerSurface::Layer layer() const;
+    void setLayer(LayerSurface::Layer layer);
 
     QString role() const;
     void setRole(const QString &role);
 
-    WlrLayerSurface::Anchors anchors() const;
-    void setAnchors(WlrLayerSurface::Anchors anchors);
+    LayerSurface::Anchors anchors() const;
+    void setAnchors(LayerSurface::Anchors anchors);
 
     qint32 exclusiveZone() const;
     void setExclusiveZone(qint32 zone);
@@ -89,39 +89,39 @@ public:
     qint32 bottomMargin() const;
     void setBottomMargin(qint32 margin);
 
-    WlrLayerSurface::KeyboardInteractivity keyboardInteractivity() const;
-    void setKeyboardInteractivity(WlrLayerSurface::KeyboardInteractivity keyboardInteractivity);
+    LayerSurface::KeyboardInteractivity keyboardInteractivity() const;
+    void setKeyboardInteractivity(LayerSurface::KeyboardInteractivity keyboardInteractivity);
 
     void initialize();
 
     void setLayerEnabled(bool enabled);
 
-    static WlrLayerSurface *get(QWindow *window);
+    static LayerSurface *get(QWindow *window);
 
-    static WlrLayerSurface *qmlAttachedProperties(QObject *object);
+    static LayerSurface *qmlAttachedProperties(QObject *object);
 
 Q_SIGNALS:
     void windowChanged(QWindow *window);
-    void layerChanged(WlrLayerSurface::Layer layer);
+    void layerChanged(LayerSurface::Layer layer);
     void roleChanged(const QString &role);
-    void anchorsChanged(WlrLayerSurface::Anchors anchors);
+    void anchorsChanged(LayerSurface::Anchors anchors);
     void exclusiveZoneChanged(qint32 exclusiveZone);
     void marginsChanged(const QMargins &margins);
     void leftMarginChanged(qint32 margin);
     void rightMarginChanged(qint32 margin);
     void topMarginChanged(qint32 margin);
     void bottomMarginChanged(qint32 margin);
-    void keyboardInteractivityChanged(Liri::QtShellIntegration::WlrLayerSurface::KeyboardInteractivity keyboardInteractivity);
+    void keyboardInteractivityChanged(Liri::QtShellIntegration::LayerSurface::KeyboardInteractivity keyboardInteractivity);
 
 protected:
-    explicit WlrLayerSurface(QObject *parent = nullptr);
+    explicit LayerSurface(QObject *parent = nullptr);
 
 private:
-    QScopedPointer<WlrLayerSurfacePrivate> const d_ptr;
+    QScopedPointer<LayerSurfacePrivate> const d_ptr;
 };
 
 } // QtShellIntegration
 
 } // Liri
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(Liri::QtShellIntegration::WlrLayerSurface::Anchors)
+Q_DECLARE_OPERATORS_FOR_FLAGS(Liri::QtShellIntegration::LayerSurface::Anchors)

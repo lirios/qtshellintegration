@@ -16,7 +16,7 @@ QWaylandLayerSurface::QWaylandLayerSurface(QWaylandLayerShellIntegration *shell,
 {
     // Let's find the interface object associated with this window,
     // or bail out if we cannot find it
-    auto *interface = Liri::QtShellIntegration::WlrLayerSurface::get(window->window());
+    auto *interface = Liri::QtShellIntegration::LayerSurface::get(window->window());
     if (!interface) {
         qCWarning(lcQpaWayland) << "Cannot find LayerSurface interface on window" << window->window();
         return;
@@ -40,15 +40,15 @@ QWaylandLayerSurface::QWaylandLayerSurface(QWaylandLayerShellIntegration *shell,
     setKeyboardInteractivity(interface->keyboardInteractivity());
 
     // React to changes to the interface object
-    connect(interface, &Liri::QtShellIntegration::WlrLayerSurface::layerChanged,
+    connect(interface, &Liri::QtShellIntegration::LayerSurface::layerChanged,
             this, &QWaylandLayerSurface::setLayer);
-    connect(interface, &Liri::QtShellIntegration::WlrLayerSurface::anchorsChanged,
+    connect(interface, &Liri::QtShellIntegration::LayerSurface::anchorsChanged,
             this, &QWaylandLayerSurface::setAnchors);
-    connect(interface, &Liri::QtShellIntegration::WlrLayerSurface::exclusiveZoneChanged,
+    connect(interface, &Liri::QtShellIntegration::LayerSurface::exclusiveZoneChanged,
             this, &QWaylandLayerSurface::setExclusiveZone);
-    connect(interface, &Liri::QtShellIntegration::WlrLayerSurface::marginsChanged,
+    connect(interface, &Liri::QtShellIntegration::LayerSurface::marginsChanged,
             this, &QWaylandLayerSurface::setMargins);
-    connect(interface, &Liri::QtShellIntegration::WlrLayerSurface::keyboardInteractivityChanged,
+    connect(interface, &Liri::QtShellIntegration::LayerSurface::keyboardInteractivityChanged,
             this, &QWaylandLayerSurface::setKeyboardInteractivity);
 }
 
@@ -82,7 +82,7 @@ void QWaylandLayerSurface::attachPopup(QWaylandShellSurface *popup)
         qCWarning(lcQpaWayland, "Cannot attach popup of unknown state");
 }
 
-void QWaylandLayerSurface::setLayer(Liri::QtShellIntegration::WlrLayerSurface::Layer layer)
+void QWaylandLayerSurface::setLayer(Liri::QtShellIntegration::LayerSurface::Layer layer)
 {
     // This slot shouldn't even be called if the compositor supports an older version
     // because in this case the interface won't allow changing the layer after initialization,
@@ -95,7 +95,7 @@ void QWaylandLayerSurface::setLayer(Liri::QtShellIntegration::WlrLayerSurface::L
                   ZWLR_LAYER_SURFACE_V1_SET_LAYER_SINCE_VERSION, version);
 }
 
-void QWaylandLayerSurface::setAnchors(Liri::QtShellIntegration::WlrLayerSurface::Anchors anchors)
+void QWaylandLayerSurface::setAnchors(Liri::QtShellIntegration::LayerSurface::Anchors anchors)
 {
     m_anchors = anchors;
     set_anchor(static_cast<uint32_t>(anchors));
@@ -108,12 +108,12 @@ void QWaylandLayerSurface::setSize(const QSize &surfaceSize)
     QSize size = surfaceSize;
 
     // Let the compositor set the width based on the output available width
-    if (m_anchors.testFlag(Liri::QtShellIntegration::WlrLayerSurface::LeftAnchor) &&
-            m_anchors.testFlag(Liri::QtShellIntegration::WlrLayerSurface::RightAnchor))
+    if (m_anchors.testFlag(Liri::QtShellIntegration::LayerSurface::LeftAnchor) &&
+            m_anchors.testFlag(Liri::QtShellIntegration::LayerSurface::RightAnchor))
         size.setWidth(0);
     // Let the compositor set the width based on the output available width
-    if (m_anchors.testFlag(Liri::QtShellIntegration::WlrLayerSurface::TopAnchor) &&
-            m_anchors.testFlag(Liri::QtShellIntegration::WlrLayerSurface::BottomAnchor))
+    if (m_anchors.testFlag(Liri::QtShellIntegration::LayerSurface::TopAnchor) &&
+            m_anchors.testFlag(Liri::QtShellIntegration::LayerSurface::BottomAnchor))
         size.setHeight(0);
 
     // Set size only if it's valid
@@ -147,10 +147,10 @@ void QWaylandLayerSurface::setMargins(const QMargins &margins)
         window()->commit();
 }
 
-void QWaylandLayerSurface::setKeyboardInteractivity(Liri::QtShellIntegration::WlrLayerSurface::KeyboardInteractivity keyboardInteractivity)
+void QWaylandLayerSurface::setKeyboardInteractivity(Liri::QtShellIntegration::LayerSurface::KeyboardInteractivity keyboardInteractivity)
 {
     auto version = zwlr_layer_surface_v1_get_version(object());
-    if (keyboardInteractivity == Liri::QtShellIntegration::WlrLayerSurface::OnDemandKeyboardInteractivity &&
+    if (keyboardInteractivity == Liri::QtShellIntegration::LayerSurface::OnDemandKeyboardInteractivity &&
             version < ZWLR_LAYER_SURFACE_V1_KEYBOARD_INTERACTIVITY_ON_DEMAND_SINCE_VERSION) {
         qCWarning(lcQpaWayland, "Ignoring on_demand keyboard interactivity: need at least version %d instead of %d",
                   ZWLR_LAYER_SURFACE_V1_KEYBOARD_INTERACTIVITY_ON_DEMAND_SINCE_VERSION, version);

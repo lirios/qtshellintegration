@@ -3,9 +3,9 @@
 
 #include <QHash>
 
-#include "wlrlayersurface_p.h"
+#include "layersurface_p.h"
 #include "qtshellintegrationlogging.h"
-#include "wlrlayersurface.h"
+#include "layersurface.h"
 
 namespace Liri {
 
@@ -13,42 +13,42 @@ namespace QtShellIntegration {
 
 // Both shell integration and QML plugins will share this global
 // since the interface is in a dynamic library
-typedef QHash<QWindow *, WlrLayerSurface *> WlrLayerSurfaceMap;
-Q_GLOBAL_STATIC(WlrLayerSurfaceMap, globalLayerSurfaces)
+typedef QHash<QWindow *, LayerSurface *> LayerSurfaceMap;
+Q_GLOBAL_STATIC(LayerSurfaceMap, globalLayerSurfaces)
 
-WlrLayerSurface::WlrLayerSurface(QObject *parent)
+LayerSurface::LayerSurface(QObject *parent)
     : QObject(parent)
-    , d_ptr(new WlrLayerSurfacePrivate())
+    , d_ptr(new LayerSurfacePrivate())
 {
 }
 
-WlrLayerSurface::~WlrLayerSurface()
+LayerSurface::~LayerSurface()
 {
-    Q_D(WlrLayerSurface);
+    Q_D(LayerSurface);
     globalLayerSurfaces->remove(d->window);
 }
 
-bool WlrLayerSurface::isInitialized() const
+bool LayerSurface::isInitialized() const
 {
-    Q_D(const WlrLayerSurface);
+    Q_D(const LayerSurface);
     return d->initialized;
 }
 
-QWindow *WlrLayerSurface::window() const
+QWindow *LayerSurface::window() const
 {
-    Q_D(const WlrLayerSurface);
+    Q_D(const LayerSurface);
     return d->window;
 }
 
-void WlrLayerSurface::setWindow(QWindow *window)
+void LayerSurface::setWindow(QWindow *window)
 {
-    Q_D(WlrLayerSurface);
+    Q_D(LayerSurface);
 
     if (d->window == window)
         return;
 
     if (d->initialized) {
-        qCWarning(lcQtShellIntegration, "Unable to change WlrLayerSurface::window after initialization");
+        qCWarning(lcQtShellIntegration, "Unable to change LayerSurface::window after initialization");
         return;
     }
 
@@ -59,21 +59,21 @@ void WlrLayerSurface::setWindow(QWindow *window)
         globalLayerSurfaces->insert(d->window, this);
 }
 
-WlrLayerSurface::Layer WlrLayerSurface::layer() const
+LayerSurface::Layer LayerSurface::layer() const
 {
-    Q_D(const WlrLayerSurface);
+    Q_D(const LayerSurface);
     return d->layer;
 }
 
-void WlrLayerSurface::setLayer(WlrLayerSurface::Layer layer)
+void LayerSurface::setLayer(LayerSurface::Layer layer)
 {
-    Q_D(WlrLayerSurface);
+    Q_D(LayerSurface);
 
     if (d->layer == layer)
         return;
 
     if (d->initialized && !d->setLayerEnabled) {
-        qCWarning(lcQtShellIntegration, "Unable to change WlrLayerSurface::layer after initialization");
+        qCWarning(lcQtShellIntegration, "Unable to change LayerSurface::layer after initialization");
         return;
     }
 
@@ -81,21 +81,21 @@ void WlrLayerSurface::setLayer(WlrLayerSurface::Layer layer)
     Q_EMIT layerChanged(d->layer);
 }
 
-QString WlrLayerSurface::role() const
+QString LayerSurface::role() const
 {
-    Q_D(const WlrLayerSurface);
+    Q_D(const LayerSurface);
     return d->role;
 }
 
-void WlrLayerSurface::setRole(const QString &role)
+void LayerSurface::setRole(const QString &role)
 {
-    Q_D(WlrLayerSurface);
+    Q_D(LayerSurface);
 
     if (d->role == role)
         return;
 
     if (d->initialized) {
-        qCWarning(lcQtShellIntegration, "Unable to change WlrLayerSurface::role after initialization");
+        qCWarning(lcQtShellIntegration, "Unable to change LayerSurface::role after initialization");
         return;
     }
 
@@ -103,15 +103,15 @@ void WlrLayerSurface::setRole(const QString &role)
     Q_EMIT roleChanged(d->role);
 }
 
-WlrLayerSurface::Anchors WlrLayerSurface::anchors() const
+LayerSurface::Anchors LayerSurface::anchors() const
 {
-    Q_D(const WlrLayerSurface);
+    Q_D(const LayerSurface);
     return d->anchors;
 }
 
-void WlrLayerSurface::setAnchors(WlrLayerSurface::Anchors anchors)
+void LayerSurface::setAnchors(LayerSurface::Anchors anchors)
 {
-    Q_D(WlrLayerSurface);
+    Q_D(LayerSurface);
 
     if (d->anchors == anchors)
         return;
@@ -120,15 +120,15 @@ void WlrLayerSurface::setAnchors(WlrLayerSurface::Anchors anchors)
     Q_EMIT anchorsChanged(d->anchors);
 }
 
-qint32 WlrLayerSurface::exclusiveZone() const
+qint32 LayerSurface::exclusiveZone() const
 {
-    Q_D(const WlrLayerSurface);
+    Q_D(const LayerSurface);
     return d->exclusiveZone;
 }
 
-void WlrLayerSurface::setExclusiveZone(qint32 zone)
+void LayerSurface::setExclusiveZone(qint32 zone)
 {
-    Q_D(WlrLayerSurface);
+    Q_D(LayerSurface);
 
     if (d->exclusiveZone == zone)
         return;
@@ -137,21 +137,21 @@ void WlrLayerSurface::setExclusiveZone(qint32 zone)
     Q_EMIT exclusiveZoneChanged(d->exclusiveZone);
 }
 
-QMargins WlrLayerSurface::margins() const
+QMargins LayerSurface::margins() const
 {
-    Q_D(const WlrLayerSurface);
+    Q_D(const LayerSurface);
     return d->margins;
 }
 
-qint32 WlrLayerSurface::leftMargin() const
+qint32 LayerSurface::leftMargin() const
 {
-    Q_D(const WlrLayerSurface);
+    Q_D(const LayerSurface);
     return d->margins.left();
 }
 
-void WlrLayerSurface::setLeftMargin(qint32 margin)
+void LayerSurface::setLeftMargin(qint32 margin)
 {
-    Q_D(WlrLayerSurface);
+    Q_D(LayerSurface);
 
     if (d->margins.left() == margin)
         return;
@@ -161,15 +161,15 @@ void WlrLayerSurface::setLeftMargin(qint32 margin)
     Q_EMIT marginsChanged(d->margins);
 }
 
-qint32 WlrLayerSurface::rightMargin() const
+qint32 LayerSurface::rightMargin() const
 {
-    Q_D(const WlrLayerSurface);
+    Q_D(const LayerSurface);
     return d->margins.right();
 }
 
-void WlrLayerSurface::setRightMargin(qint32 margin)
+void LayerSurface::setRightMargin(qint32 margin)
 {
-    Q_D(WlrLayerSurface);
+    Q_D(LayerSurface);
 
     if (d->margins.right() == margin)
         return;
@@ -179,15 +179,15 @@ void WlrLayerSurface::setRightMargin(qint32 margin)
     Q_EMIT marginsChanged(d->margins);
 }
 
-qint32 WlrLayerSurface::topMargin() const
+qint32 LayerSurface::topMargin() const
 {
-    Q_D(const WlrLayerSurface);
+    Q_D(const LayerSurface);
     return d->margins.top();
 }
 
-void WlrLayerSurface::setTopMargin(qint32 margin)
+void LayerSurface::setTopMargin(qint32 margin)
 {
-    Q_D(WlrLayerSurface);
+    Q_D(LayerSurface);
 
     if (d->margins.top() == margin)
         return;
@@ -197,15 +197,15 @@ void WlrLayerSurface::setTopMargin(qint32 margin)
     Q_EMIT marginsChanged(d->margins);
 }
 
-qint32 WlrLayerSurface::bottomMargin() const
+qint32 LayerSurface::bottomMargin() const
 {
-    Q_D(const WlrLayerSurface);
+    Q_D(const LayerSurface);
     return d->margins.bottom();
 }
 
-void WlrLayerSurface::setBottomMargin(qint32 margin)
+void LayerSurface::setBottomMargin(qint32 margin)
 {
-    Q_D(WlrLayerSurface);
+    Q_D(LayerSurface);
 
     if (d->margins.bottom() == margin)
         return;
@@ -215,15 +215,15 @@ void WlrLayerSurface::setBottomMargin(qint32 margin)
     Q_EMIT marginsChanged(d->margins);
 }
 
-WlrLayerSurface::KeyboardInteractivity WlrLayerSurface::keyboardInteractivity() const
+LayerSurface::KeyboardInteractivity LayerSurface::keyboardInteractivity() const
 {
-    Q_D(const WlrLayerSurface);
+    Q_D(const LayerSurface);
     return d->keyboardInteractivity;
 }
 
-void WlrLayerSurface::setKeyboardInteractivity(WlrLayerSurface::KeyboardInteractivity keyboardInteractivity)
+void LayerSurface::setKeyboardInteractivity(LayerSurface::KeyboardInteractivity keyboardInteractivity)
 {
-    Q_D(WlrLayerSurface);
+    Q_D(LayerSurface);
 
     if (d->keyboardInteractivity == keyboardInteractivity)
         return;
@@ -232,33 +232,33 @@ void WlrLayerSurface::setKeyboardInteractivity(WlrLayerSurface::KeyboardInteract
     Q_EMIT keyboardInteractivityChanged(d->keyboardInteractivity);
 }
 
-void WlrLayerSurface::initialize()
+void LayerSurface::initialize()
 {
-    Q_D(WlrLayerSurface);
+    Q_D(LayerSurface);
 
     if (d->initialized)
         return;
 
     if (!d->window) {
-        qCWarning(lcQtShellIntegration, "Window not assigned to WlrLayerSurface, failed to initialize");
+        qCWarning(lcQtShellIntegration, "Window not assigned to LayerSurface, failed to initialize");
         return;
     }
 
     d->initialized = true;
 }
 
-void WlrLayerSurface::setLayerEnabled(bool enabled)
+void LayerSurface::setLayerEnabled(bool enabled)
 {
-    Q_D(WlrLayerSurface);
+    Q_D(LayerSurface);
     d->setLayerEnabled = enabled;
 }
 
-WlrLayerSurface *WlrLayerSurface::get(QWindow *window)
+LayerSurface *LayerSurface::get(QWindow *window)
 {
     return globalLayerSurfaces->value(window, nullptr);
 }
 
-WlrLayerSurface *WlrLayerSurface::qmlAttachedProperties(QObject *object)
+LayerSurface *LayerSurface::qmlAttachedProperties(QObject *object)
 {
     return get(qobject_cast<QWindow *>(object));
 }

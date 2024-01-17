@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <LiriQtShellIntegration/WlrLayerSurface>
+#include <LiriQtShellIntegration/LayerSurface>
 
 //
 //  W A R N I N G
@@ -20,20 +20,20 @@ namespace Liri {
 
 namespace QtShellIntegration {
 
-class WlrLayerSurfacePrivate
+class LayerSurfacePrivate
 {
 public:
-    WlrLayerSurfacePrivate() = default;
+    LayerSurfacePrivate() = default;
 
     bool initialized = false;
     bool setLayerEnabled = false;
     QWindow *window = nullptr;
-    WlrLayerSurface::Layer layer = WlrLayerSurface::TopLayer;
+    LayerSurface::Layer layer = LayerSurface::TopLayer;
     QString role = QStringLiteral("unknown");
-    WlrLayerSurface::Anchors anchors;
+    LayerSurface::Anchors anchors;
     qint32 exclusiveZone = 0;
     QMargins margins;
-    WlrLayerSurface::KeyboardInteractivity keyboardInteractivity = WlrLayerSurface::ExclusiveKeyboardInteractivity;
+    LayerSurface::KeyboardInteractivity keyboardInteractivity = LayerSurface::ExclusiveKeyboardInteractivity;
 };
 
 } // namespace QtShellIntegration

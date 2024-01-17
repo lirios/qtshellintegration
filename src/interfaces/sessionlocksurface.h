@@ -13,17 +13,17 @@ namespace Liri {
 
 namespace QtShellIntegration {
 
-class ExtSessionLockSurfacePrivate;
+class SessionLockSurfacePrivate;
 
-class LIRIQTSHELLINTEGRATION_EXPORT ExtSessionLockSurface : public QObject
+class LIRIQTSHELLINTEGRATION_EXPORT SessionLockSurface : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
-    Q_DECLARE_PRIVATE(ExtSessionLockSurface)
+    Q_DECLARE_PRIVATE(SessionLockSurface)
     Q_PROPERTY(QWindow *window READ window WRITE setWindow NOTIFY windowChanged)
 public:
-    ExtSessionLockSurface(QObject *parent = nullptr);
-    ~ExtSessionLockSurface();
+    SessionLockSurface(QObject *parent = nullptr);
+    ~SessionLockSurface();
 
     bool isInitialized() const;
 
@@ -32,14 +32,14 @@ public:
     QWindow *window() const;
     void setWindow(QWindow *window);
 
-    static ExtSessionLockSurface *get(QWindow *window);
+    static SessionLockSurface *get(QWindow *window);
 
 Q_SIGNALS:
     void windowChanged(QWindow *window);
     void unlockRequested();
 
 private:
-    QScopedPointer<ExtSessionLockSurfacePrivate> const d_ptr;
+    QScopedPointer<SessionLockSurfacePrivate> const d_ptr;
 };
 
 } // QtShellIntegration

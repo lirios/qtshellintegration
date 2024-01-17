@@ -4,10 +4,10 @@
 #include <QQmlExtensionPlugin>
 #include <QtQml>
 
-#include "../extsessionlocksurface.h"
-#include "../wlrlayersurface.h"
+#include "../sessionlocksurface.h"
+#include "../layersurface.h"
 
-QML_DECLARE_TYPEINFO(Liri::QtShellIntegration::WlrLayerSurface, QML_HAS_ATTACHED_PROPERTIES)
+QML_DECLARE_TYPEINFO(Liri::QtShellIntegration::LayerSurface, QML_HAS_ATTACHED_PROPERTIES)
 
 class Plugin : public QQmlExtensionPlugin
 {
@@ -17,8 +17,8 @@ public:
     void registerTypes(const char *uri) override {
         Q_ASSERT(QLatin1String(uri) == QLatin1String("Liri.QtShellIntegration"));
 
-        qmlRegisterType<Liri::QtShellIntegration::ExtSessionLockSurface>(uri, 1, 0, "ExtSessionLockSurface");
-        qmlRegisterType<Liri::QtShellIntegration::WlrLayerSurface>(uri, 1, 0, "WlrLayerSurface");
+        qmlRegisterType<Liri::QtShellIntegration::SessionLockSurface>(uri, 1, 0, "SessionLockSurface");
+        qmlRegisterType<Liri::QtShellIntegration::LayerSurface>(uri, 1, 0, "LayerSurface");
     }
 };
 

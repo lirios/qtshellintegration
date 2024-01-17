@@ -21,7 +21,7 @@ QWaylandExtSessionLockSurface::QWaylandExtSessionLockSurface(QWaylandExtSessionL
     , QtWayland::ext_session_lock_surface_v1()
     , m_lock(lock)
 {
-    auto *interface = Liri::QtShellIntegration::ExtSessionLockSurface::get(window->window());
+    auto *interface = Liri::QtShellIntegration::SessionLockSurface::get(window->window());
     if (!interface) {
         qCWarning(lcQpaWayland) << "Cannot find LockSurface interface on window" << window->window();
         return;
@@ -29,7 +29,7 @@ QWaylandExtSessionLockSurface::QWaylandExtSessionLockSurface(QWaylandExtSessionL
 
     init(lock->get_lock_surface(window->wlSurface(), window->waylandScreen()->output()));
 
-    connect(interface, &Liri::QtShellIntegration::ExtSessionLockSurface::unlockRequested,
+    connect(interface, &Liri::QtShellIntegration::SessionLockSurface::unlockRequested,
             this, &QWaylandExtSessionLockSurface::handleUnlock);
 }
 

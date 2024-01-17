@@ -2,8 +2,8 @@ liri_add_module(QtShellIntegration
     DESCRIPTION
         "Integration between Wayland shells and Qt applications"
     SOURCES
-        extsessionlocksurface.cpp extsessionlocksurface.h
-        wlrlayersurface.cpp wlrlayersurface.h wlrlayersurface_p.h
+        sessionlocksurface.cpp sessionlocksurface.h
+        layersurface.cpp layersurface.h layersurface_p.h
     PUBLIC_LIBRARIES
         Qt6::Core
         Qt6::Gui

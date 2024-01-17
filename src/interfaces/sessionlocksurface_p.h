@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <LiriQtShellIntegration/ExtSessionLockSurface>
+#include <LiriQtShellIntegration/SessionLockSurface>
 
 namespace Liri {
 
@@ -20,10 +20,10 @@ namespace QtShellIntegration {
 // We mean it.
 //
 
-class ExtSessionLockSurfacePrivate
+class SessionLockSurfacePrivate
 {
 public:
-    ExtSessionLockSurfacePrivate() = default;
+    SessionLockSurfacePrivate() = default;
 
     bool initialized = false;
     QWindow *window = nullptr;
