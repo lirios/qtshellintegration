@@ -16,10 +16,13 @@ namespace QtShellIntegration {
 typedef QHash<QWindow *, LayerSurface *> LayerSurfaceMap;
 Q_GLOBAL_STATIC(LayerSurfaceMap, globalLayerSurfaces)
 
-LayerSurface::LayerSurface(QObject *parent)
+LayerSurface::LayerSurface(QWindow *window, QObject *parent)
     : QObject(parent)
     , d_ptr(new LayerSurfacePrivate())
 {
+    Q_D(LayerSurface);
+    d->window = window;
+    globalLayerSurfaces->insert(window, this);
 }
 
 LayerSurface::~LayerSurface()
@@ -28,35 +31,10 @@ LayerSurface::~LayerSurface()
     globalLayerSurfaces->remove(d->window);
 }
 
-bool LayerSurface::isInitialized() const
-{
-    Q_D(const LayerSurface);
-    return d->initialized;
-}
-
 QWindow *LayerSurface::window() const
 {
     Q_D(const LayerSurface);
     return d->window;
-}
-
-void LayerSurface::setWindow(QWindow *window)
-{
-    Q_D(LayerSurface);
-
-    if (d->window == window)
-        return;
-
-    if (d->initialized) {
-        qCWarning(lcQtShellIntegration, "Unable to change LayerSurface::window after initialization");
-        return;
-    }
-
-    d->window = window;
-    Q_EMIT windowChanged(d->window);
-
-    if (!globalLayerSurfaces->contains(d->window))
-        globalLayerSurfaces->insert(d->window, this);
 }
 
 LayerSurface::Layer LayerSurface::layer() const
@@ -71,11 +49,6 @@ void LayerSurface::setLayer(LayerSurface::Layer layer)
 
     if (d->layer == layer)
         return;
-
-    if (d->initialized && !d->setLayerEnabled) {
-        qCWarning(lcQtShellIntegration, "Unable to change LayerSurface::layer after initialization");
-        return;
-    }
 
     d->layer = layer;
     Q_EMIT layerChanged(d->layer);
@@ -93,11 +66,6 @@ void LayerSurface::setScope(const QString &scope)
 
     if (d->scope == scope)
         return;
-
-    if (d->initialized) {
-        qCWarning(lcQtShellIntegration, "Unable to change LayerSurface::scope after initialization");
-        return;
-    }
 
     d->scope = scope;
     Q_EMIT scopeChanged(d->scope);
@@ -232,21 +200,6 @@ void LayerSurface::setKeyboardInteractivity(LayerSurface::KeyboardInteractivity 
     Q_EMIT keyboardInteractivityChanged(d->keyboardInteractivity);
 }
 
-void LayerSurface::initialize()
-{
-    Q_D(LayerSurface);
-
-    if (d->initialized)
-        return;
-
-    if (!d->window) {
-        qCWarning(lcQtShellIntegration, "Window not assigned to LayerSurface, failed to initialize");
-        return;
-    }
-
-    d->initialized = true;
-}
-
 void LayerSurface::setLayerEnabled(bool enabled)
 {
     Q_D(LayerSurface);
@@ -255,7 +208,10 @@ void LayerSurface::setLayerEnabled(bool enabled)
 
 LayerSurface *LayerSurface::get(QWindow *window)
 {
-    return globalLayerSurfaces->value(window, nullptr);
+    if (globalLayerSurfaces->contains(window))
+        return globalLayerSurfaces->value(window);
+    else
+        return new LayerSurface(window);
 }
 
 LayerSurface *LayerSurface::qmlAttachedProperties(QObject *object)

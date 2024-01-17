@@ -25,7 +25,6 @@ class LayerSurfacePrivate
 public:
     LayerSurfacePrivate() = default;
 
-    bool initialized = false;
     bool setLayerEnabled = false;
     QWindow *window = nullptr;
     LayerSurface::Layer layer = LayerSurface::TopLayer;

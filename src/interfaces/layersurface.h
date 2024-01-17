@@ -18,8 +18,10 @@ class LIRIQTSHELLINTEGRATION_EXPORT LayerSurface : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
+    QML_UNCREATABLE("Cannot instantiate LayerSurface")
+    QML_ATTACHED(LayerSurface)
     Q_DECLARE_PRIVATE(LayerSurface)
-    Q_PROPERTY(QWindow *window READ window WRITE setWindow NOTIFY windowChanged)
+    Q_PROPERTY(QWindow *window READ window CONSTANT)
     Q_PROPERTY(Liri::QtShellIntegration::LayerSurface::Layer layer READ layer WRITE setLayer NOTIFY layerChanged)
     Q_PROPERTY(QString scope READ scope WRITE setScope NOTIFY scopeChanged)
     Q_PROPERTY(Liri::QtShellIntegration::LayerSurface::Anchors anchors READ anchors WRITE setAnchors NOTIFY anchorsChanged)
@@ -58,10 +60,7 @@ public:
 
     ~LayerSurface();
 
-    bool isInitialized() const;
-
     QWindow *window() const;
-    void setWindow(QWindow *window);
 
     LayerSurface::Layer layer() const;
     void setLayer(LayerSurface::Layer layer);
@@ -92,8 +91,6 @@ public:
     LayerSurface::KeyboardInteractivity keyboardInteractivity() const;
     void setKeyboardInteractivity(LayerSurface::KeyboardInteractivity keyboardInteractivity);
 
-    void initialize();
-
     void setLayerEnabled(bool enabled);
 
     static LayerSurface *get(QWindow *window);
@@ -101,7 +98,6 @@ public:
     static LayerSurface *qmlAttachedProperties(QObject *object);
 
 Q_SIGNALS:
-    void windowChanged(QWindow *window);
     void layerChanged(LayerSurface::Layer layer);
     void scopeChanged(const QString &scope);
     void anchorsChanged(LayerSurface::Anchors anchors);
@@ -114,7 +110,7 @@ Q_SIGNALS:
     void keyboardInteractivityChanged(Liri::QtShellIntegration::LayerSurface::KeyboardInteractivity keyboardInteractivity);
 
 protected:
-    explicit LayerSurface(QObject *parent = nullptr);
+    explicit LayerSurface(QWindow *window, QObject *parent = nullptr);
 
 private:
     QScopedPointer<LayerSurfacePrivate> const d_ptr;
